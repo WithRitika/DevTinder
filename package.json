@@ -1,0 +1,21 @@
+{
+  "name": "devtinder",
+  "version": "1.0.0",
+  "description": "Tinder for Devs",
+  "keywords": [
+    "nodejs",
+    "havascript"
+  ],
+  "license": "ISC",
+  "author": "Ritika Soni",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev":"nodemon src/app.js",
+    "start":"node src/app.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14"
+  }
+}
