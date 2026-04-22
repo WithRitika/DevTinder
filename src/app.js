@@ -1,22 +1,29 @@
 const express = require("express");
 const app = express();
-const {adminAuth, userAuth} = require('./middlewares/auth');
+const { adminAuth, userAuth } = require("./middlewares/auth");
+const { connectDB } = require("./config/database");
 const port = 7777;
 
-app.listen(port, () => {
-  console.log(`App listen on port number:${port}`);
-});
 
-app.get('/getUserData', (req,res)=>{
-    try{
- throw new Error('sdfef');
-    }
-    catch (err){
-   res.status(500).send("Some error occurred contact team to handle it.")
-    }
-   
-});
+// We will connect to server once the database connection established successfully.
+connectDB()
+  .then(() => {
+    console.log("Database connection established...");
+    app.listen(port, () => {
+      console.log(`App listen on port number:${port}`);
+    });
+  })
+  .catch((err) => {
+    console.log("Database cannot be connected");
+  });   
 
+app.get("/getUserData", (req, res) => {
+  try {
+    throw new Error("sdfef");
+  } catch (err) {
+    res.status(500).send("Some error occurred contact team to handle it.");
+  }
+});
 
 // This will only handle GET call to /user
 
@@ -77,33 +84,31 @@ app.get('/getUserData', (req,res)=>{
 //   res.send("Hello from the test server");
 // });
 
-
 // Writing middleware - we generally use => app.use()
 // handle Auth middleware for all request
-app.use('/admin', adminAuth);
+app.use("/admin", adminAuth);
 // app.use('/user', userAuth);
 
-app.get('/admin/getUser',(req,res)=>{
-res.send("User details sent");
+app.get("/admin/getUser", (req, res) => {
+  res.send("User details sent");
 });
 
-// userAuth is the middleware 
-app.get('/user/getUser',userAuth,(req,res)=>{
-res.send("User details sent successfully");
+// userAuth is the middleware
+app.get("/user/getUser", userAuth, (req, res) => {
+  res.send("User details sent successfully");
 });
 
-app.post('/admin/addUser',(req,res)=>{
-res.send("User details added");
+app.post("/admin/addUser", (req, res) => {
+  res.send("User details added");
 });
 
-app.delete('/admin/deleteUser',(req,res)=>{
-res.send("User details deleted");
+app.delete("/admin/deleteUser", (req, res) => {
+  res.send("User details deleted");
 });
-
 
 // To handle the error ::: Always write this towards the end
-app.use("/",(err, req, res, next)=>{
-    if(err){
-        res.status(500).send("Something went wrong");
-    }
+app.use("/", (err, req, res, next) => {
+  if (err) {
+    res.status(500).send("Something went wrong");
+  }
 });
